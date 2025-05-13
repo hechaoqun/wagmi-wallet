@@ -1,15 +1,15 @@
-import { createAppKit } from '@reown/appkit/react'
+import './App.css'
 
-import { WagmiProvider } from 'wagmi'
 import { useState } from 'react'
+import { WagmiProvider } from 'wagmi'
 
+import { createAppKit, useAppKit } from '@reown/appkit/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ActionButtonList } from './components/ActionButtonList'
-import { SmartContractActionButtonList } from './components/SmartContractActionButtonList'
-import { InfoList } from './components/InfoList'
-import { projectId, metadata, networks, wagmiAdapter } from './config'
 
-import "./App.css"
+import { ActionButtonList } from './components/ActionButtonList'
+import { InfoList } from './components/InfoList'
+import { SmartContractActionButtonList } from './components/SmartContractActionButtonList'
+import { metadata, networks, projectId, wagmiAdapter } from './config'
 
 const queryClient = new QueryClient()
 
@@ -36,6 +36,7 @@ export function App() {
   const [transactionHash, setTransactionHash] = useState<`0x${string}` | undefined>(undefined);
   const [signedMsg, setSignedMsg] = useState('');
   const [balance, setBalance] = useState('');
+  const { open } = useAppKit();
 
   const receiveHash = (hash: `0x${string}`) => {
     setTransactionHash(hash); // Update the state with the transaction hash
@@ -56,6 +57,9 @@ export function App() {
       <h1>AppKit Wagmi React dApp Example</h1>
       <WagmiProvider config={wagmiAdapter.wagmiConfig}>
         <QueryClientProvider client={queryClient}>
+            <button onClick={() => {
+              open()
+            }}>测试</button>
             <appkit-button />
             <ActionButtonList sendHash={receiveHash} sendSignMsg={receiveSignedMsg} sendBalance={receivebalance}/>
             <SmartContractActionButtonList />
